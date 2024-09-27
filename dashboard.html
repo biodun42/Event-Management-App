@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A U R A - Dashboard</title>
+    <link rel="stylesheet" href="css/dash.css" />
+    <link rel="icon" href="images/Logomark.svg" />
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+      <div class="logo">A U R A</div>
+      <ul class="menu">
+        <li><a href="event.html">My Event</a></li>
+        <li id="logOut"><a href="#">Log Out</a></li>
+      </ul>
+      <button onclick="modal()" id="Create">Create Event</button>
+    </header>
+
+    <form class="event-form">
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label for="event-image">Event Image:</label>
+        <input
+          type="file"
+          id="event-image"
+          name="eventImage"
+          accept="image/*"
+          required
+        />
+      </div>
+
+      <!-- Event Name -->
+      <div class="form-group">
+        <label for="event-name">Event Name:</label>
+        <input
+          type="text"
+          id="event-name"
+          name="eventName"
+          placeholder="Enter Event Name"
+          required
+        />
+      </div>
+
+      <!-- Event Date -->
+      <div class="form-group">
+        <label for="event-date">Event Date:</label>
+        <input type="date" id="event-date" name="eventDate" required />
+      </div>
+
+      <!-- Event Time -->
+      <div class="form-group">
+        <label for="event-time">Event Time:</label>
+        <input type="time" id="event-time" name="eventTime" required />
+      </div>
+
+      <!-- Event Location -->
+      <div class="form-group">
+        <label for="event-location">Event Location:</label>
+        <input
+          type="text"
+          id="event-location"
+          name="eventLocation"
+          placeholder="Enter Event Location"
+          required
+        />
+      </div>
+
+      <!-- Organizer Name -->
+      <div class="form-group">
+        <label for="organizer-name">Organizer Name:</label>
+        <input
+          type="text"
+          id="organizer-name"
+          name="organizerName"
+          placeholder="Enter Organizer Name"
+          required
+        />
+      </div>
+
+      <!-- Event Type -->
+      <div class="form-group">
+        <label for="event-type">Event Type:</label>
+        <select id="event-type" name="eventType" required>
+          <option value="" disabled selected>Select Event Type</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Corporate">Corporate</option>
+          <option value="Birthday">Birthday</option>
+          <option value="Conference">Conference</option>
+          <option value="Seminar">Seminar</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Product Launch">Product Launch</option>
+          <option value="Charity">Charity</option>
+          <option value="Festival">Festival</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Gala">Gala</option>
+          <option value="Networking Event">Networking Event</option>
+          <option value="Concert">Concert</option>
+          <option value="Exhibition">Exhibition</option>
+          <option value="Sports Event">Sports Event</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="bt">
+        <input id="button" type="submit" value="Create Event" />
+        <input
+          onclick="closeModal()"
+          id="cancel"
+          type="button"
+          value="Cancel"
+        />
+      </div>
+    </form>
+    <!-- slider -->
+
+    <section class="slider">
+      <!-- list Items -->
+      <div class="list">
+        <div class="item active">
+          <img src="images/wp5016679.jpg" />
+          <div class="content">
+            <p>Wedding</p>
+            <h2>Event</h2>
+            <p>Your dream wedding, crafted with care.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-pavel-danilyuk-7180858.jpg" />
+          <div class="content">
+            <p>Birthday</p>
+            <h2>Event</h2>
+            <p>Celebrate your birthday in style.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-davi-nicoletto-1717685805-28538697.jpg" />
+          <div class="content">
+            <p>Festival</p>
+            <h2>Event</h2>
+            <p>Join our vibrant cultural festival.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-rdne-7713246.jpg" />
+          <div class="content">
+            <p>Graduation</p>
+            <h2>Ceremony</h2>
+            <p>Celebrate your academic achievements.</p>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-quang-nguyen-vinh-222549-4078029.jpg" />
+          <div class="content">
+            <p>Holiday</p>
+            <h2>Event</h2>
+            <p>Enjoy a festive holiday event.</p>
+          </div>
+        </div>
+      </div>
+      <!-- button arrows -->
+      <div class="arrows">
+        <button id="prev"><</button>
+        <button id="next">></button>
+      </div>
+      <!-- thumbnail -->
+      <div class="thumbnail">
+        <div class="item active">
+          <img
+            src="images/pexels-photography-maghradze-ph-1659410-28542549.jpg"
+          />
+          <div class="content">Wedding</div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-nadin-sh-78971847-17800178.jpg" />
+          <div class="content">Birthday</div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-guillermo-meza-1083014242-28486125.jpg" />
+          <div class="content">Festival</div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-pavel-danilyuk-7942478.jpg" />
+          <div class="content">Graduation</div>
+        </div>
+        <div class="item">
+          <img src="images/pexels-ganesh-photography-264848156-18511408.jpg" />
+          <div class="content">Holiday</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- topic -->
+    <div class="topic">
+      <h1>All Events</h1>
+      <p>Here are all the events available for you to attend.</p>
+    </div>
+
+    <!-- all event -->
+    <section class="all-event"></section>
+
+    <script src="script.js"></script>
+    <script src="Js/swal.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        where,
+        query,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDWp5otOhMP-waHYc3gGsttwd2K3Dql6P8",
+        authDomain: "event-management-app-7322b.firebaseapp.com",
+        projectId: "event-management-app-7322b",
+        storageBucket: "event-management-app-7322b.appspot.com",
+        messagingSenderId: "941526771959",
+        appId: "1:941526771959:web:481232381d5dd4d7d58bf2",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const colRef = collection(db, "userevents");
+      const storage = getStorage(app);
+
+      const getLoggedInUser = async (id) => {
+        try {
+          const q = query(colRef, where("uid", "==", id));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            const user = querySnapshot.docs[0].data();
+            console.log("User found: ", user);
+            return user;
+          } else {
+            console.log("No user found");
+            return null;
+          }
+        } catch (error) {
+          console.log("Error fetching user: ", error);
+        }
+      };
+
+      let userId = "";
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          userId = user.uid;
+          console.log("User logged in: ", user.uid);
+          getEvents();
+        } else {
+          console.log("No user logged in");
+        }
+      });
+
+      const form = document.querySelector(".event-form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const target = e.target;
+        const image = target.eventImage.files[0];
+        const name = target.eventName.value;
+        const date = target.eventDate.value;
+        const time = target.eventTime.value;
+        const location = target.eventLocation.value;
+        const organizer = target.organizerName.value;
+        const type = target.eventType.value;
+        const button = target.button;
+
+        if (
+          !image ||
+          !name ||
+          !date ||
+          !time ||
+          !location ||
+          !organizer ||
+          !type
+        ) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Please fill all the fields",
+          });
+          return;
+        }
+
+        const fileImage = image;
+        const random = Math.floor(Math.random() * 5000);
+        const storageRef = ref(storage, "images/" + fileImage.name + random);
+
+        try {
+          button.value = "Creating Event...";
+          const res = await uploadBytes(storageRef, fileImage);
+          const imageUrl = await getDownloadURL(res.ref);
+          console.log("Image URL: ", imageUrl);
+          const dataToAdd = {
+            image: imageUrl,
+            name,
+            date,
+            time,
+            location,
+            organizer,
+            type,
+            userId,
+          };
+
+          const save = await addDoc(colRef, dataToAdd);
+          console.log("Event added: ", save);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Event added successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            getEvents();
+          });
+          form.reset();
+          window.location = "dashboard.html";
+        } catch (error) {
+          console.log("Error adding event: ", error);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Error adding event",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } finally {
+          button.value = "Create Event";
+        }
+      });
+
+      async function getEvents() {
+        document.querySelector(
+          ".all-event"
+        ).innerHTML = `<div class="no-events">
+          <p>Loading events...</p>
+        </div>`;
+        try {
+          const data = await getDocs(colRef);
+          document.querySelector(".all-event").innerHTML = ""; // Clear previous events
+
+          if (data.empty) {
+            // If there are no events, show the "No events" message
+            document.querySelector(".all-event").innerHTML = `
+        <div class="no-events">
+          <p>No events created yet.</p>
+        </div>`;
+          } else {
+            data.forEach((doc) => {
+              console.log(doc.data());
+              let eachData = { ...doc.data(), id: doc.id };
+
+              // Format the date to "Day Month, Year"
+              const date = new Date(eachData.date);
+              eachData.date = date.toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              });
+
+              // Format the time to "hh:mm AM/PM"
+              const time = new Date(`1970-01-01T${eachData.time}:00`);
+              eachData.time = time.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              });
+
+              document.querySelector(".all-event").innerHTML += `
+          <div class="card">
+            <div class="card-img">
+              <img src="${eachData.image}" alt="Event Image" />
+            </div>
+            <h2>${eachData.name}</h2>
+            <div class="about">
+              <p>Date:</p>
+              <p>${eachData.date}</p>
+            </div>
+            <div class="about">
+              <p>Time:</p>
+              <p>${eachData.time}</p>
+            </div>
+            <div class="about">
+              <p>Location:</p>
+              <p>${eachData.location}</p>
+            </div>
+            <div class="about">
+              <p>Organizer name:</p>
+              <p>${eachData.organizer}</p>
+            </div>
+            <div class="about">
+              <p>Event Type:</p>
+              <p>${eachData.type}</p>
+            </div>
+            <button><a href="preview.html?id=${eachData.id}">View Event</a></button>
+          </div>
+        `;
+            });
+          }
+        } catch (error) {
+          console.log("Error fetching events: ", error);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Error fetching events",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+
+      const logOutBtn = document.getElementById("logOut");
+      logOutBtn.addEventListener("click", () => {
+        try {
+          signOut(auth);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Logged out successfully",
+            showConfirmButton: false,
+            timer: 2500,
+          }).then(() => {
+            window.location = "index.html";
+          });
+        } catch (error) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: error.message,
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

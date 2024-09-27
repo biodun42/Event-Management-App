@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A U R A - Event</title>
+    <link rel="icon" href="images/Logomark.svg" />
+    <link rel="stylesheet" href="css/dash.css" />
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+      <div class="logo">A U R A</div>
+      <ul class="menu">
+        <li><a href="dashboard.html">Home</a></li>
+        <li id="logOut"><a href="#">Log Out</a></li>
+      </ul>
+      <button id="Create">Create Event</button>
+    </header>
+
+    <!-- Event Form -->
+    <form class="event-form">
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label for="event-image">Event Image:</label>
+        <input
+          type="file"
+          id="event-image"
+          name="eventImage"
+          accept="image/*"
+          required
+        />
+      </div>
+
+      <!-- Event Name -->
+      <div class="form-group">
+        <label for="event-name">Event Name:</label>
+        <input
+          type="text"
+          id="event-name"
+          name="eventName"
+          placeholder="Enter Event Name"
+          required
+        />
+      </div>
+
+      <!-- Event Date -->
+      <div class="form-group">
+        <label for="event-date">Event Date:</label>
+        <input type="date" id="event-date" name="eventDate" required />
+      </div>
+
+      <!-- Event Time -->
+      <div class="form-group">
+        <label for="event-time">Event Time:</label>
+        <input type="time" id="event-time" name="eventTime" required />
+      </div>
+
+      <!-- Event Location -->
+      <div class="form-group">
+        <label for="event-location">Event Location:</label>
+        <input
+          type="text"
+          id="event-location"
+          name="eventLocation"
+          placeholder="Enter Event Location"
+          required
+        />
+      </div>
+
+      <!-- Organizer Name -->
+      <div class="form-group">
+        <label for="organizer-name">Organizer Name:</label>
+        <input
+          type="text"
+          id="organizer-name"
+          name="organizerName"
+          placeholder="Enter Organizer Name"
+          required
+        />
+      </div>
+
+      <!-- Event Type -->
+      <div class="form-group">
+        <label for="event-type">Event Type:</label>
+        <select id="event-type" name="eventType" required>
+          <option value="" disabled selected>Select Event Type</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Corporate">Corporate</option>
+          <option value="Birthday">Birthday</option>
+          <option value="Conference">Conference</option>
+          <option value="Seminar">Seminar</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Product Launch">Product Launch</option>
+          <option value="Charity">Charity</option>
+          <option value="Festival">Festival</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Gala">Gala</option>
+          <option value="Networking Event">Networking Event</option>
+          <option value="Concert">Concert</option>
+          <option value="Exhibition">Exhibition</option>
+          <option value="Sports Event">Sports Event</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="bt">
+        <input id="button" type="submit" value="Create Event" />
+        <input id="cancel" type="button" value="Cancel" />
+      </div>
+    </form>
+
+    <!-- topic -->
+    <div class="topic">
+      <h1>All Events</h1>
+      <p>Here are all the events you have created</p>
+    </div>
+
+    <!-- All Event -->
+    <section class="all-event"></section>
+
+    <script src="Js/swal.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        where,
+        query,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDWp5otOhMP-waHYc3gGsttwd2K3Dql6P8",
+        authDomain: "event-management-app-7322b.firebaseapp.com",
+        projectId: "event-management-app-7322b",
+        storageBucket: "event-management-app-7322b.appspot.com",
+        messagingSenderId: "941526771959",
+        appId: "1:941526771959:web:481232381d5dd4d7d58bf2",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const colRef = collection(db, "userevents");
+      const storage = getStorage(app);
+
+      const eventForm = document.querySelector(".event-form");
+      const topic = document.querySelector(".topic");
+      const allEvent = document.querySelector(".all-event");
+
+      document.getElementById("Create").addEventListener("click", () => {
+        eventForm.classList.add("active");
+        topic.classList.add("active");
+        allEvent.classList.add("active");
+      });
+
+      document.getElementById("cancel").addEventListener("click", () => {
+        eventForm.classList.remove("active");
+        topic.classList.remove("active");
+        allEvent.classList.remove("active");
+      });
+      let userId = "";
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          userId = user.uid;
+          console.log("User logged in: ", user.uid);
+          getEvents();
+        } else {
+          console.log("No user logged in");
+        }
+      });
+
+      const form = document.querySelector(".event-form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const target = e.target;
+        const image = target.eventImage.files[0];
+        const name = target.eventName.value;
+        const date = target.eventDate.value;
+        const time = target.eventTime.value;
+        const location = target.eventLocation.value;
+        const organizer = target.organizerName.value;
+        const type = target.eventType.value;
+        const button = target.button;
+
+        if (
+          !image ||
+          !name ||
+          !date ||
+          !time ||
+          !location ||
+          !organizer ||
+          !type
+        ) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Please fill all the fields",
+          });
+          return;
+        }
+
+        const fileImage = image;
+        const random = Math.floor(Math.random() * 5000);
+        const storageRef = ref(storage, "images/" + fileImage.name + random);
+
+        try {
+          button.value = "Creating Event...";
+          const res = await uploadBytes(storageRef, fileImage);
+          const imageUrl = await getDownloadURL(res.ref);
+          console.log("Image URL: ", imageUrl);
+          const dataToAdd = {
+            image: imageUrl,
+            name,
+            date,
+            time,
+            location,
+            organizer,
+            type,
+            userId,
+          };
+
+          const save = await addDoc(colRef, dataToAdd);
+          console.log("Event added: ", save);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Event added successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            getEvents();
+          });
+          form.reset();
+          window.location = "dashboard.html";
+        } catch (error) {
+          console.log("Error adding event: ", error);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Error adding event",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } finally {
+          button.value = "Create Event";
+        }
+      });
+
+      async function getEvents() {
+        document.querySelector(
+          ".all-event"
+        ).innerHTML = `<div class="no-events">
+          <p>Loading events...</p>
+        </div>`;
+
+        try {
+          const q = query(colRef, where("userId", "==", userId));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            document.querySelector(".all-event").innerHTML = `
+        <div class="no-events">
+          <p>No events created yet.</p>
+        </div>
+      `;
+          } else {
+            document.querySelector(".all-event").innerHTML = ""; // Clear loading text
+
+            querySnapshot.forEach((doc) => {
+              const data = { ...doc.data(), id: doc.id };
+
+              // Check if date is stored as a Firebase Timestamp
+              const eventDate = data.date.toDate
+                ? data.date.toDate()
+                : new Date(data.date);
+              const formattedDate = eventDate.toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
+
+              const eventTime = data.time ? data.time : "No specific time";
+
+              document.querySelector(".all-event").innerHTML += `
+          <div class="card">
+            <div class="card-img">
+              <img src="${data.image}" alt="Event Image" />
+            </div>
+            <h2>${data.name}</h2>
+            <div class="about">
+              <p>Date:</p>
+              <p>${formattedDate}</p>
+            </div>
+            <div class="about">
+              <p>Time:</p>
+              <p>${eventTime}</p>
+            </div>
+            <div class="about">
+              <p>Location:</p>
+              <p>${data.location}</p>
+            </div>
+            <div class="about">
+              <p>Organiser name:</p>
+              <p>${data.organizer}</p>
+            </div>
+            <div class="about">
+              <p>Event Type:</p>
+              <p>${data.type}</p>
+            </div>
+            <button><a href="preview.html?id=${data.id}">View Event</a></button>
+          </div>
+        `;
+            });
+          }
+        } catch (error) {
+          document.querySelector(".all-event").innerHTML =
+            "<p>Error loading events.</p>";
+          console.error("Error fetching events: ", error);
+        }
+      }
+      const logOutBtn = document.getElementById("logOut");
+      logOutBtn.addEventListener("click", () => {
+        try {
+          signOut(auth);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Logged out successfully",
+            showConfirmButton: false,
+            timer: 2500,
+          }).then(() => {
+            window.location = "index.html";
+          });
+        } catch (error) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: error.message,
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
